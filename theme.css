@@ -1,0 +1,2063 @@
+/* =============================================================================
+   TSUGANE THEME v1.0.0
+   ============================================================================= 
+   
+   Based on Matteblack Neovim colorscheme
+   Author: Adib
+   
+   A sharp, modern theme with warm amber accents and smooth animations.
+   Features a dark mode ported from Matteblack and a complementary warm light mode.
+   
+   QUICK CUSTOMIZATION:
+   --------------------
+   - Border radius:    Search for "--tsugane-radius-base" (Section 1.1)
+   - Animation speed:  Search for "--tsugane-transition" (Section 1.2)
+   - Colors:           Search for "COLOR PALETTE" (Section 2)
+   - Fonts:            Search for "FONT STACKS" (Section 5.1)
+   
+   ============================================================================= 
+   TABLE OF CONTENTS
+   =============================================================================
+   
+   1. CONFIGURATION .......................... Line ~50
+      1.1 Border Radius Control
+      1.2 Animation Timing
+      1.3 Spacing Scale
+   
+   2. COLOR PALETTE .......................... Line ~120
+      2.1 Matteblack Base Colors
+      2.2 Accent Colors
+      2.3 Semantic Colors
+   
+   3. DARK THEME ............................. Line ~200
+      3.1 Backgrounds & Surfaces
+      3.2 Text Hierarchy
+      3.3 Borders & Dividers
+      3.4 Interactive States
+   
+   4. LIGHT THEME ............................ Line ~350
+      4.1 Backgrounds & Surfaces
+      4.2 Text Hierarchy
+      4.3 Borders & Dividers
+      4.4 Interactive States
+   
+   5. TYPOGRAPHY ............................. Line ~500
+      5.1 Font Stacks
+      5.2 Headings (Instrument Serif)
+      5.3 Bold Styling (Green)
+      5.4 Italic Styling (Light Blue)
+      5.5 Inline Title
+   
+   6. EDITOR ................................. Line ~600
+      6.1 Links (Internal/External)
+      6.2 Tags
+      6.3 Code Blocks & Inline Code
+      6.4 Highlights (Box Style)
+      6.5 Lists & Checkboxes
+      6.6 Blockquotes
+      6.7 Tables
+      6.8 Horizontal Rules
+   
+   7. COMPONENTS ............................. Line ~750
+      7.1 Buttons
+      7.2 Inputs & Text Fields
+      7.3 Toggles & Checkboxes
+      7.4 Modals & Dialogs
+      7.5 Popovers & Tooltips
+      7.6 Tabs
+      7.7 Scrollbars
+   
+   8. WORKSPACE .............................. Line ~900
+      8.1 Ribbon
+      8.2 Sidebar & File Explorer
+      8.3 Search (Floating Style)
+      8.4 Tab Headers & Stacked Tabs
+      8.5 Status Bar
+   
+   9. CALLOUTS ............................... Line ~1000
+      9.1 Base Callout Styling
+      9.2 Callout Type Colors
+   
+   10. ANIMATIONS ............................ Line ~1100
+       10.1 Base Transitions
+       10.2 Hover Effects
+       10.3 Focus States
+       10.4 Keyframe Animations
+   
+   11. UTILITY CLASSES ....................... Line ~1200
+       11.1 Hide Properties (cssclass)
+       11.2 No Inline Title (cssclass)
+       11.3 Icon Adjustments (Datacore)
+       11.4 Hover Popover Title
+   
+   ============================================================================= */
+
+
+/* =============================================================================
+   1. CONFIGURATION
+   ============================================================================= 
+   
+   EASY CUSTOMIZATION - Modify these values to personalize your theme!
+   
+   =========================================================================== */
+
+:root {
+  /* -------------------------------------------------------------------------
+     1.1 BORDER RADIUS CONTROL
+     -------------------------------------------------------------------------
+     Change this ONE value to affect the entire app's corner rounding.
+     
+     Options:
+     - 0px      -> Sharp, editorial (CURRENT)
+     - 4px      -> Subtle rounding
+     - 8px      -> Moderate rounding  
+     - 12px     -> Soft rounding
+     - 9999px   -> Pill/fully rounded
+     ----------------------------------------------------------------------- */
+  --tsugane-radius-base: 0px;
+  
+  /* Derived radii (auto-calculated from base) */
+  --tsugane-radius-xs: calc(var(--tsugane-radius-base) * 0.25);
+  --tsugane-radius-sm: calc(var(--tsugane-radius-base) * 0.5);
+  --tsugane-radius-md: var(--tsugane-radius-base);
+  --tsugane-radius-lg: calc(var(--tsugane-radius-base) * 1.5);
+  --tsugane-radius-xl: calc(var(--tsugane-radius-base) * 2);
+  --tsugane-radius-full: 9999px; /* Always pill-shaped (for avatars, badges) */
+  
+  /* -------------------------------------------------------------------------
+     1.2 ANIMATION TIMING
+     -------------------------------------------------------------------------
+     Adjust animation speed globally. Set to 0ms to disable animations.
+     
+     Presets:
+     - Subtle:     100ms / 150ms / 200ms
+     - Noticeable: 200ms / 300ms / 400ms (CURRENT)
+     - Dramatic:   300ms / 500ms / 700ms
+     ----------------------------------------------------------------------- */
+  --tsugane-transition-fast: 200ms;
+  --tsugane-transition-normal: 300ms;
+  --tsugane-transition-slow: 400ms;
+  
+  /* Easing curves */
+  --tsugane-ease-default: cubic-bezier(0.4, 0, 0.2, 1);   /* Smooth deceleration */
+  --tsugane-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* Playful overshoot */
+  --tsugane-ease-snappy: cubic-bezier(0.2, 0, 0, 1);      /* Quick and crisp */
+  
+  /* -------------------------------------------------------------------------
+     1.3 SPACING SCALE
+     ----------------------------------------------------------------------- */
+  --tsugane-space-xs: 2px;
+  --tsugane-space-sm: 4px;
+  --tsugane-space-md: 8px;
+  --tsugane-space-lg: 16px;
+  --tsugane-space-xl: 24px;
+  --tsugane-space-2xl: 32px;
+}
+
+
+/* =============================================================================
+   2. COLOR PALETTE
+   ============================================================================= 
+   
+   Based on Matteblack Neovim colorscheme
+   
+   =========================================================================== */
+
+:root {
+  /* -------------------------------------------------------------------------
+     2.1 MATTEBLACK BASE COLORS
+     -------------------------------------------------------------------------
+     These are the source colors from the Neovim theme.
+     ----------------------------------------------------------------------- */
+  
+  /* Backgrounds (darkest to lightest) */
+  --mb-bg0: #0D0D0D;   /* Deepest black - crust */
+  --mb-bg1: #121212;   /* Primary background */
+  --mb-bg2: #333333;   /* Borders, dividers */
+  --mb-bg3: #212121;   /* Secondary surfaces */
+  --mb-bg4: #262626;   /* Selection, overlays */
+  
+  /* Foregrounds (brightest to dimmest) */
+  --mb-fg0: #FFFFFF;   /* Pure white - headings */
+  --mb-fg1: #EAEAEA;   /* Primary text */
+  --mb-fg2: #BEBEBE;   /* Secondary text */
+  --mb-fg3: #8A8A8D;   /* Muted/comments */
+  --mb-fg4: #5C6370;   /* Very dim */
+  
+  /* -------------------------------------------------------------------------
+     2.2 ACCENT COLORS
+     ----------------------------------------------------------------------- */
+  --mb-orange: #F59E0B;   /* Primary accent */
+  --mb-amber: #D97706;    /* Secondary accent */
+  --mb-yellow: #FBBF24;   /* Highlights, hover */
+  --mb-gold: #EFBF04;     /* Special highlights */
+  --mb-ochre: #BF9903;    /* Muted gold */
+  
+  --mb-red: #B91C1C;      /* Deep red */
+  --mb-crimson: #DC2626;  /* Bright red - errors */
+  --mb-pink: #F87171;     /* Soft red */
+  
+  --mb-green: #059669;    /* Primary green - bold text */
+  --mb-teal: #10B981;     /* Bright green - success */
+  
+  --mb-blue: #3B82F6;     /* Primary blue - info */
+  --mb-cyan: #1EA7A0;     /* Cyan - code */
+  
+  --mb-purple: #8D20B2;   /* Purple - external links */
+  --mb-magenta: #B027DE;  /* Bright magenta */
+  
+  /* -------------------------------------------------------------------------
+     2.3 SEMANTIC COLORS
+     ----------------------------------------------------------------------- */
+  --tsugane-accent: var(--mb-orange);
+  --tsugane-accent-hover: var(--mb-yellow);
+  --tsugane-accent-muted: var(--mb-amber);
+  
+  --tsugane-success: var(--mb-teal);
+  --tsugane-warning: var(--mb-amber);
+  --tsugane-error: var(--mb-crimson);
+  --tsugane-info: var(--mb-blue);
+  
+  /* Text emphasis */
+  --tsugane-bold-color: var(--mb-green);
+  --tsugane-italic-color: #A1C7E5;
+  --tsugane-highlight-color: var(--mb-gold);
+  
+  /* RGB versions for alpha compositing */
+  --tsugane-accent-rgb: 245, 158, 11;
+  --tsugane-highlight-rgb: 239, 191, 4;
+}
+
+
+/* =============================================================================
+   3. DARK THEME
+   ============================================================================= 
+   
+   Direct port of Matteblack Neovim colorscheme
+   
+   =========================================================================== */
+
+.theme-dark {
+  /* -------------------------------------------------------------------------
+     3.1 BACKGROUNDS & SURFACES
+     ----------------------------------------------------------------------- */
+  --background-primary: var(--mb-bg1);
+  --background-primary-alt: var(--mb-bg3);
+  --background-secondary: var(--mb-bg0);
+  --background-secondary-alt: var(--mb-bg3);
+  --background-modifier-hover: var(--mb-bg4);
+  --background-modifier-active-hover: var(--mb-bg2);
+  --background-modifier-border: var(--mb-bg2);
+  --background-modifier-border-hover: var(--mb-fg4);
+  --background-modifier-border-focus: var(--tsugane-accent);
+  --background-modifier-error: var(--mb-crimson);
+  --background-modifier-error-rgb: 220, 38, 38;
+  --background-modifier-success: var(--mb-teal);
+  --background-modifier-message: rgba(0, 0, 0, 0.9);
+  
+  /* Interactive backgrounds */
+  --interactive-normal: var(--mb-bg3);
+  --interactive-hover: var(--mb-bg4);
+  --interactive-accent: var(--tsugane-accent);
+  --interactive-accent-hsl: 38, 92%, 50%;
+  --interactive-accent-hover: var(--tsugane-accent-hover);
+  
+  /* -------------------------------------------------------------------------
+     3.2 TEXT HIERARCHY
+     ----------------------------------------------------------------------- */
+  --text-normal: var(--mb-fg1);
+  --text-muted: var(--mb-fg3);
+  --text-faint: var(--mb-fg4);
+  --text-on-accent: var(--mb-bg1);
+  --text-on-accent-inverted: var(--mb-fg0);
+  --text-error: var(--mb-crimson);
+  --text-success: var(--mb-teal);
+  --text-warning: var(--mb-amber);
+  --text-accent: var(--tsugane-accent);
+  --text-accent-hover: var(--tsugane-accent-hover);
+  
+  /* Heading colors */
+  --text-title-h1: var(--mb-fg0);
+  --text-title-h2: var(--mb-fg0);
+  --text-title-h3: var(--mb-fg1);
+  --text-title-h4: var(--mb-fg1);
+  --text-title-h5: var(--mb-fg2);
+  --text-title-h6: var(--mb-fg2);
+  
+  /* -------------------------------------------------------------------------
+     3.3 BORDERS & DIVIDERS
+     ----------------------------------------------------------------------- */
+  --divider-color: var(--mb-bg2);
+  --divider-color-hover: var(--mb-fg4);
+  
+  /* -------------------------------------------------------------------------
+     3.4 INTERACTIVE STATES
+     ----------------------------------------------------------------------- */
+  --link-color: var(--tsugane-accent);
+  --link-color-hover: var(--tsugane-accent-hover);
+  --link-external-color: var(--mb-purple);
+  --link-external-color-hover: var(--mb-magenta);
+  --link-unresolved-color: var(--mb-fg3);
+  --link-unresolved-opacity: 0.7;
+  
+  /* Selection */
+  --text-selection: rgba(245, 158, 11, 0.25);
+  --text-highlight-bg: rgba(239, 191, 4, 0.3);
+  --text-highlight-bg-active: rgba(239, 191, 4, 0.5);
+  
+  /* Cursor */
+  --cursor-color: var(--tsugane-accent);
+  
+  /* Graph colors */
+  --graph-line: var(--mb-bg2);
+  --graph-node: var(--tsugane-accent);
+  --graph-node-focused: var(--tsugane-accent-hover);
+  --graph-node-tag: var(--mb-teal);
+  --graph-node-attachment: var(--mb-cyan);
+  --graph-node-unresolved: var(--mb-fg4);
+  
+  /* Highlights for search, etc. */
+  --search-result-background: rgba(245, 158, 11, 0.2);
+  
+  /* Scrollbar */
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: rgba(234, 234, 234, 0.1);
+  --scrollbar-active-thumb-bg: rgba(234, 234, 234, 0.2);
+  
+  /* Mono RGB for calculations */
+  --mono-rgb-0: 0, 0, 0;
+  --mono-rgb-100: 234, 234, 234;
+  
+  /* Code colors */
+  --code-normal: var(--mb-cyan);
+  --code-background: var(--mb-bg3);
+  --code-comment: var(--mb-fg3);
+  --code-function: var(--mb-crimson);
+  --code-keyword: var(--mb-green);
+  --code-string: var(--mb-fg1);
+  --code-tag: var(--mb-green);
+  --code-value: var(--mb-gold);
+  --code-property: var(--mb-amber);
+  
+  /* Tag colors */
+  --tag-color: var(--mb-gold);
+  --tag-color-hover: var(--mb-yellow);
+  --tag-background: rgba(239, 191, 4, 0.15);
+  --tag-background-hover: rgba(239, 191, 4, 0.25);
+  
+  /* Checkbox */
+  --checkbox-color: var(--tsugane-accent);
+  --checkbox-color-hover: var(--tsugane-accent-hover);
+  --checkbox-border-color: var(--mb-fg3);
+  --checkbox-border-color-hover: var(--tsugane-accent);
+  
+  /* Toggles */
+  --toggle-thumb-color: var(--mb-fg1);
+  --toggle-border-width: 1px;
+  
+  /* Icons */
+  --icon-color: var(--mb-fg3);
+  --icon-color-hover: var(--mb-fg1);
+  --icon-color-focused: var(--tsugane-accent);
+  --icon-color-active: var(--tsugane-accent);
+  
+  /* Nav items */
+  --nav-item-color: var(--mb-fg2);
+  --nav-item-color-hover: var(--mb-fg1);
+  --nav-item-color-active: var(--tsugane-accent);
+  --nav-item-background-hover: var(--mb-bg4);
+  --nav-item-background-active: var(--mb-bg3);
+  
+  /* Blockquote */
+  --blockquote-border-color: var(--mb-amber);
+  --blockquote-border-thickness: 3px;
+  --blockquote-background-color: rgba(217, 119, 6, 0.05);
+  
+  /* Table */
+  --table-header-background: var(--mb-bg3);
+  --table-header-background-hover: var(--mb-bg4);
+  --table-row-even-background: var(--mb-bg3);
+  --table-row-odd-background: transparent;
+  
+  /* Tabs */
+  --tab-text-color: var(--mb-fg3);
+  --tab-text-color-focused: var(--mb-fg1);
+  --tab-text-color-focused-active: var(--tsugane-accent);
+  --tab-text-color-focused-active-current: var(--tsugane-accent);
+  --tab-background-active: var(--mb-bg3);
+  
+  /* Callouts */
+  --callout-default-color: var(--mb-fg3);
+  --callout-note: 59, 130, 246;     /* Blue */
+  --callout-abstract: 139, 92, 246; /* Purple */
+  --callout-info: 30, 167, 160;     /* Cyan */
+  --callout-todo: 245, 158, 11;     /* Orange (accent) */
+  --callout-tip: 16, 185, 129;      /* Teal */
+  --callout-success: 16, 185, 129;  /* Teal */
+  --callout-question: 251, 191, 36; /* Yellow */
+  --callout-warning: 217, 119, 6;   /* Amber */
+  --callout-failure: 220, 38, 38;   /* Crimson */
+  --callout-danger: 185, 28, 28;    /* Red */
+  --callout-bug: 220, 38, 38;       /* Crimson */
+  --callout-example: 141, 32, 178;  /* Purple */
+  --callout-quote: 138, 138, 141;   /* Gray */
+  
+  /* Embed */
+  --embed-border-left: var(--tsugane-accent);
+  --embed-background: var(--mb-bg3);
+  
+  /* Properties/Frontmatter */
+  --metadata-label-text-color: var(--mb-fg3);
+  --metadata-input-text-color: var(--mb-fg2);
+  
+  /* Indentation guides */
+  --indentation-guide-color: var(--mb-bg2);
+  --indentation-guide-color-active: var(--mb-fg4);
+  
+  /* File colors (for file explorer icons) */
+  --color-accent: var(--tsugane-accent);
+}
+
+
+/* =============================================================================
+   4. LIGHT THEME
+   ============================================================================= 
+   
+   Complementary warm light theme with same accent colors
+   
+   =========================================================================== */
+
+.theme-light {
+  /* Light mode base colors */
+  --tl-bg0: #FAF8F5;   /* Primary background - warm off-white */
+  --tl-bg1: #F5F2ED;   /* Secondary background */
+  --tl-bg2: #EBE7E0;   /* Tertiary/surface */
+  --tl-bg3: #E0DBD2;   /* Borders */
+  --tl-bg4: #D5CFC4;   /* Strong borders */
+  
+  --tl-fg0: #0D0D0D;   /* Darkest text */
+  --tl-fg1: #1A1A1A;   /* Primary text */
+  --tl-fg2: #4A4A4A;   /* Secondary text */
+  --tl-fg3: #7A7A7A;   /* Muted text */
+  --tl-fg4: #A0A0A0;   /* Very muted */
+  
+  /* -------------------------------------------------------------------------
+     4.1 BACKGROUNDS & SURFACES
+     ----------------------------------------------------------------------- */
+  --background-primary: var(--tl-bg0);
+  --background-primary-alt: var(--tl-bg1);
+  --background-secondary: var(--tl-bg1);
+  --background-secondary-alt: var(--tl-bg2);
+  --background-modifier-hover: var(--tl-bg2);
+  --background-modifier-active-hover: var(--tl-bg3);
+  --background-modifier-border: var(--tl-bg3);
+  --background-modifier-border-hover: var(--tl-bg4);
+  --background-modifier-border-focus: var(--tsugane-accent);
+  --background-modifier-error: var(--mb-crimson);
+  --background-modifier-error-rgb: 220, 38, 38;
+  --background-modifier-success: var(--mb-teal);
+  --background-modifier-message: rgba(255, 255, 255, 0.95);
+  
+  /* Interactive backgrounds */
+  --interactive-normal: var(--tl-bg2);
+  --interactive-hover: var(--tl-bg3);
+  --interactive-accent: var(--tsugane-accent);
+  --interactive-accent-hsl: 38, 92%, 50%;
+  --interactive-accent-hover: var(--tsugane-accent-hover);
+  
+  /* -------------------------------------------------------------------------
+     4.2 TEXT HIERARCHY
+     ----------------------------------------------------------------------- */
+  --text-normal: var(--tl-fg1);
+  --text-muted: var(--tl-fg3);
+  --text-faint: var(--tl-fg4);
+  --text-on-accent: var(--mb-fg0);
+  --text-on-accent-inverted: var(--tl-fg0);
+  --text-error: var(--mb-crimson);
+  --text-success: var(--mb-green);
+  --text-warning: var(--mb-amber);
+  --text-accent: var(--mb-amber);
+  --text-accent-hover: var(--mb-orange);
+  
+  /* Heading colors */
+  --text-title-h1: var(--tl-fg0);
+  --text-title-h2: var(--tl-fg0);
+  --text-title-h3: var(--tl-fg1);
+  --text-title-h4: var(--tl-fg1);
+  --text-title-h5: var(--tl-fg2);
+  --text-title-h6: var(--tl-fg2);
+  
+  /* -------------------------------------------------------------------------
+     4.3 BORDERS & DIVIDERS
+     ----------------------------------------------------------------------- */
+  --divider-color: var(--tl-bg3);
+  --divider-color-hover: var(--tl-bg4);
+  
+  /* -------------------------------------------------------------------------
+     4.4 INTERACTIVE STATES
+     ----------------------------------------------------------------------- */
+  --link-color: var(--mb-amber);
+  --link-color-hover: var(--mb-orange);
+  --link-external-color: var(--mb-purple);
+  --link-external-color-hover: var(--mb-magenta);
+  --link-unresolved-color: var(--tl-fg3);
+  --link-unresolved-opacity: 0.7;
+  
+  /* Selection */
+  --text-selection: rgba(245, 158, 11, 0.2);
+  --text-highlight-bg: rgba(239, 191, 4, 0.35);
+  --text-highlight-bg-active: rgba(239, 191, 4, 0.5);
+  
+  /* Cursor */
+  --cursor-color: var(--tsugane-accent);
+  
+  /* Graph colors */
+  --graph-line: var(--tl-bg4);
+  --graph-node: var(--mb-amber);
+  --graph-node-focused: var(--mb-orange);
+  --graph-node-tag: var(--mb-green);
+  --graph-node-attachment: var(--mb-cyan);
+  --graph-node-unresolved: var(--tl-fg4);
+  
+  /* Highlights for search, etc. */
+  --search-result-background: rgba(245, 158, 11, 0.15);
+  
+  /* Scrollbar */
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: rgba(26, 26, 26, 0.1);
+  --scrollbar-active-thumb-bg: rgba(26, 26, 26, 0.2);
+  
+  /* Mono RGB for calculations */
+  --mono-rgb-0: 255, 255, 255;
+  --mono-rgb-100: 26, 26, 26;
+  
+  /* Code colors - adjusted for light background */
+  --code-normal: #0E7490;          /* Darker cyan */
+  --code-background: var(--tl-bg2);
+  --code-comment: var(--tl-fg3);
+  --code-function: #B91C1C;        /* Darker red */
+  --code-keyword: #047857;         /* Darker green */
+  --code-string: var(--tl-fg1);
+  --code-tag: #047857;
+  --code-value: #B45309;           /* Darker gold */
+  --code-property: #92400E;        /* Darker amber */
+  
+  /* Tag colors */
+  --tag-color: var(--mb-amber);
+  --tag-color-hover: var(--mb-orange);
+  --tag-background: rgba(217, 119, 6, 0.12);
+  --tag-background-hover: rgba(217, 119, 6, 0.2);
+  
+  /* Checkbox */
+  --checkbox-color: var(--mb-amber);
+  --checkbox-color-hover: var(--mb-orange);
+  --checkbox-border-color: var(--tl-fg3);
+  --checkbox-border-color-hover: var(--mb-amber);
+  
+  /* Toggles */
+  --toggle-thumb-color: var(--tl-bg0);
+  --toggle-border-width: 1px;
+  
+  /* Icons */
+  --icon-color: var(--tl-fg3);
+  --icon-color-hover: var(--tl-fg1);
+  --icon-color-focused: var(--mb-amber);
+  --icon-color-active: var(--mb-amber);
+  
+  /* Nav items */
+  --nav-item-color: var(--tl-fg2);
+  --nav-item-color-hover: var(--tl-fg1);
+  --nav-item-color-active: var(--mb-amber);
+  --nav-item-background-hover: var(--tl-bg2);
+  --nav-item-background-active: var(--tl-bg2);
+  
+  /* Blockquote */
+  --blockquote-border-color: var(--mb-amber);
+  --blockquote-border-thickness: 3px;
+  --blockquote-background-color: rgba(217, 119, 6, 0.05);
+  
+  /* Table */
+  --table-header-background: var(--tl-bg2);
+  --table-header-background-hover: var(--tl-bg3);
+  --table-row-even-background: var(--tl-bg1);
+  --table-row-odd-background: transparent;
+  
+  /* Tabs */
+  --tab-text-color: var(--tl-fg3);
+  --tab-text-color-focused: var(--tl-fg1);
+  --tab-text-color-focused-active: var(--mb-amber);
+  --tab-text-color-focused-active-current: var(--mb-amber);
+  --tab-background-active: var(--tl-bg2);
+  
+  /* Callouts - same as dark, they work well */
+  --callout-default-color: var(--tl-fg3);
+  --callout-note: 59, 130, 246;
+  --callout-abstract: 139, 92, 246;
+  --callout-info: 14, 116, 144;     /* Darker cyan for light mode */
+  --callout-todo: 180, 83, 9;       /* Darker orange */
+  --callout-tip: 4, 120, 87;        /* Darker teal */
+  --callout-success: 4, 120, 87;
+  --callout-question: 180, 83, 9;
+  --callout-warning: 146, 64, 14;   /* Darker amber */
+  --callout-failure: 185, 28, 28;
+  --callout-danger: 153, 27, 27;
+  --callout-bug: 185, 28, 28;
+  --callout-example: 126, 34, 206;
+  --callout-quote: 107, 114, 128;
+  
+  /* Embed */
+  --embed-border-left: var(--mb-amber);
+  --embed-background: var(--tl-bg2);
+  
+  /* Properties/Frontmatter */
+  --metadata-label-text-color: var(--tl-fg3);
+  --metadata-input-text-color: var(--tl-fg2);
+  
+  /* Indentation guides */
+  --indentation-guide-color: var(--tl-bg3);
+  --indentation-guide-color-active: var(--tl-bg4);
+  
+  /* File colors */
+  --color-accent: var(--mb-amber);
+}
+
+
+/* =============================================================================
+   5. TYPOGRAPHY
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   5.1 FONT STACKS
+   ----------------------------------------------------------------------- */
+
+body {
+  /* Body text: Zenbones Brainy -> Geist -> Inter -> System */
+  --font-text-theme: "Zenbones Brainy", "Geist", "Inter", 
+                     -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-text: var(--font-text-theme);
+  
+  /* Interface: Match body */
+  --font-interface-theme: "Zenbones Brainy", "Geist", "Inter", 
+                          -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-interface: var(--font-interface-theme);
+  
+  /* Monospace: For code blocks */
+  --font-monospace-theme: "Zenbones Brainy Mono", "Geist Mono", "SF Mono", 
+                          "Fira Code", "JetBrains Mono", monospace;
+  --font-monospace: var(--font-monospace-theme);
+  
+  /* Line height */
+  --line-height-normal: 1.6;
+  --line-height-tight: 1.4;
+}
+
+/* -------------------------------------------------------------------------
+   5.2 HEADINGS (Instrument Serif)
+   ----------------------------------------------------------------------- */
+
+body {
+  /* Heading font family */
+  --h1-font: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  --h2-font: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  --h3-font: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  --h4-font: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  --h5-font: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  --h6-font: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  
+  /* Heading weights - Instrument Serif only has Regular, so keep it elegant */
+  --h1-weight: 400;
+  --h2-weight: 400;
+  --h3-weight: 400;
+  --h4-weight: 400;
+  --h5-weight: 400;
+  --h6-weight: 400;
+  
+  /* Heading sizes */
+  --h1-size: 2em;
+  --h2-size: 1.6em;
+  --h3-size: 1.37em;
+  --h4-size: 1.2em;
+  --h5-size: 1.1em;
+  --h6-size: 1em;
+  
+  /* Heading line heights */
+  --h1-line-height: 1.3;
+  --h2-line-height: 1.35;
+  --h3-line-height: 1.4;
+  --h4-line-height: 1.4;
+  --h5-line-height: 1.4;
+  --h6-line-height: 1.4;
+}
+
+/* Apply heading styles */
+.markdown-source-view.mod-cm6 .cm-header-1,
+.markdown-rendered h1,
+.HyperMD-header-1 {
+  font-family: var(--h1-font);
+  font-weight: var(--h1-weight);
+}
+
+.markdown-source-view.mod-cm6 .cm-header-2,
+.markdown-rendered h2,
+.HyperMD-header-2 {
+  font-family: var(--h2-font);
+  font-weight: var(--h2-weight);
+}
+
+.markdown-source-view.mod-cm6 .cm-header-3,
+.markdown-rendered h3,
+.HyperMD-header-3 {
+  font-family: var(--h3-font);
+  font-weight: var(--h3-weight);
+}
+
+.markdown-source-view.mod-cm6 .cm-header-4,
+.markdown-rendered h4,
+.HyperMD-header-4 {
+  font-family: var(--h4-font);
+  font-weight: var(--h4-weight);
+}
+
+.markdown-source-view.mod-cm6 .cm-header-5,
+.markdown-rendered h5,
+.HyperMD-header-5 {
+  font-family: var(--h5-font);
+  font-weight: var(--h5-weight);
+}
+
+.markdown-source-view.mod-cm6 .cm-header-6,
+.markdown-rendered h6,
+.HyperMD-header-6 {
+  font-family: var(--h6-font);
+  font-weight: var(--h6-weight);
+}
+
+/* -------------------------------------------------------------------------
+   5.3 BOLD STYLING (Green)
+   ----------------------------------------------------------------------- */
+
+strong,
+b,
+.cm-strong,
+span.cm-strong {
+  color: var(--tsugane-bold-color);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------
+   5.4 ITALIC STYLING (Light Blue)
+   ----------------------------------------------------------------------- */
+
+em,
+i,
+.cm-em,
+span.cm-em {
+  color: var(--tsugane-italic-color);
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------------------
+   5.5 INLINE TITLE
+   ----------------------------------------------------------------------- */
+
+body {
+  --inline-title-font: "Instrument Serif", "Georgia", serif;
+  --inline-title-weight: 400;
+  --inline-title-size: clamp(1.8rem, 4vw, 2.5rem);
+  --inline-title-line-height: 1.3;
+}
+
+.inline-title {
+  font-family: var(--inline-title-font);
+  font-weight: var(--inline-title-weight);
+}
+
+
+/* =============================================================================
+   6. EDITOR
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   6.1 LINKS
+   ----------------------------------------------------------------------- */
+
+/* Internal links */
+a.internal-link,
+.cm-hmd-internal-link .cm-underline {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              text-decoration-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+a.internal-link:hover,
+.cm-hmd-internal-link:hover .cm-underline {
+  color: var(--link-color-hover);
+  text-decoration-color: var(--link-color-hover);
+}
+
+/* External links */
+a.external-link,
+.cm-url {
+  color: var(--link-external-color);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              text-decoration-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+a.external-link:hover,
+.cm-url:hover {
+  color: var(--link-external-color-hover);
+  text-decoration-color: var(--link-external-color-hover);
+}
+
+/* Unresolved links */
+.is-unresolved {
+  opacity: var(--link-unresolved-opacity);
+}
+
+/* -------------------------------------------------------------------------
+   6.2 TAGS
+   ----------------------------------------------------------------------- */
+
+body {
+  --tag-radius: var(--tsugane-radius-md);
+  --tag-padding-x: 0.5em;
+  --tag-padding-y: 0.15em;
+}
+
+a.tag,
+.cm-hashtag {
+  background-color: var(--tag-background);
+  color: var(--tag-color);
+  border-radius: var(--tag-radius);
+  padding: var(--tag-padding-y) var(--tag-padding-x);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+a.tag:hover,
+.cm-hashtag:hover {
+  background-color: var(--tag-background-hover);
+  color: var(--tag-color-hover);
+}
+
+/* -------------------------------------------------------------------------
+   6.3 CODE BLOCKS & INLINE CODE
+   ----------------------------------------------------------------------- */
+
+body {
+  --code-radius: var(--tsugane-radius-md);
+}
+
+/* Inline code */
+code,
+.cm-inline-code {
+  background-color: var(--code-background);
+  color: var(--code-normal);
+  border-radius: var(--code-radius);
+  padding: 0.1em 0.35em;
+  font-family: var(--font-monospace);
+  font-size: 0.9em;
+}
+
+/* Code blocks */
+pre,
+.markdown-rendered pre,
+.cm-s-obsidian .HyperMD-codeblock {
+  background-color: var(--code-background);
+  border-radius: var(--code-radius);
+  padding: var(--tsugane-space-lg);
+}
+
+/* Code block syntax highlighting */
+.cm-s-obsidian .cm-comment { color: var(--code-comment); }
+.cm-s-obsidian .cm-keyword { color: var(--code-keyword); }
+.cm-s-obsidian .cm-string { color: var(--code-string); }
+.cm-s-obsidian .cm-number { color: var(--code-value); }
+.cm-s-obsidian .cm-atom { color: var(--code-value); }
+.cm-s-obsidian .cm-tag { color: var(--code-tag); }
+.cm-s-obsidian .cm-attribute { color: var(--code-property); }
+.cm-s-obsidian .cm-variable { color: var(--code-normal); }
+.cm-s-obsidian .cm-variable-2 { color: var(--code-property); }
+.cm-s-obsidian .cm-def { color: var(--code-function); }
+.cm-s-obsidian .cm-operator { color: var(--text-muted); }
+.cm-s-obsidian .cm-property { color: var(--code-property); }
+.cm-s-obsidian .cm-qualifier { color: var(--code-keyword); }
+.cm-s-obsidian .cm-type { color: var(--code-value); }
+.cm-s-obsidian .cm-builtin { color: var(--code-function); }
+
+/* -------------------------------------------------------------------------
+   6.4 HIGHLIGHTS (Box Style)
+   ------------------------------------------------------------------------- 
+   Ported from Highlight Box.css snippet
+   ----------------------------------------------------------------------- */
+
+body {
+  --text-highlight-border-width: 1.5px;
+  --text-highlight-border-opacity: 1;
+  --text-highlight-text-opacity: 1;
+  --text-highlight-border-radius: var(--tsugane-radius-md);
+  --text-highlight-padding-block: var(--size-2-1);
+  --text-highlight-padding-inline: var(--size-2-2);
+}
+
+.theme-dark {
+  --text-highlight-bg-rgb: 239, 191, 4;
+}
+
+.theme-light {
+  --text-highlight-bg-rgb: 217, 119, 6;
+}
+
+/* Source mode highlights */
+.cm-s-obsidian:not(.is-live-preview) {
+  span.cm-highlight {
+    border-block: var(--text-highlight-border-width) solid
+      rgba(var(--text-highlight-bg-rgb), var(--text-highlight-border-opacity));
+    padding-block: var(--text-highlight-padding-block);
+    -webkit-box-decoration-break: clone;
+    color: rgba(var(--text-highlight-bg-rgb), var(--text-highlight-text-opacity));
+  }
+  
+  /* Start of highlight */
+  :not(.cm-highlight:not(.cm-formatting-highlight)) + span.cm-formatting-highlight,
+  span.cm-formatting-highlight:first-child {
+    border-top-left-radius: var(--text-highlight-border-radius);
+    border-bottom-left-radius: var(--text-highlight-border-radius);
+    border-left: var(--text-highlight-border-width) solid
+      rgba(var(--text-highlight-bg-rgb), var(--text-highlight-border-opacity));
+    padding-left: var(--text-highlight-padding-inline);
+  }
+  
+  /* End of highlight */
+  .cm-highlight:not(.cm-formatting-highlight) + span.cm-formatting-highlight,
+  span.cm-highlight:last-child {
+    border-top-right-radius: var(--text-highlight-border-radius);
+    border-bottom-right-radius: var(--text-highlight-border-radius);
+    border-right: var(--text-highlight-border-width) solid
+      rgba(var(--text-highlight-bg-rgb), var(--text-highlight-border-opacity));
+    padding-right: var(--text-highlight-padding-inline);
+  }
+}
+
+/* Live preview and reading mode highlights */
+.cm-s-obsidian.is-live-preview span.cm-highlight,
+.markdown-rendered mark {
+  border-radius: var(--text-highlight-border-radius);
+  border: var(--text-highlight-border-width) solid
+    rgba(var(--text-highlight-bg-rgb), var(--text-highlight-border-opacity));
+  padding: var(--text-highlight-padding-block) var(--text-highlight-padding-inline);
+  -webkit-box-decoration-break: clone;
+  color: rgba(var(--text-highlight-bg-rgb), var(--text-highlight-text-opacity));
+  background-color: transparent;
+}
+
+/* -------------------------------------------------------------------------
+   6.5 LISTS & CHECKBOXES
+   ----------------------------------------------------------------------- */
+
+/* List bullets */
+.markdown-rendered ul > li::marker,
+.cm-formatting-list-ul {
+  color: var(--text-muted);
+}
+
+/* Ordered list numbers */
+.markdown-rendered ol > li::marker {
+  color: var(--text-muted);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  border-radius: var(--tsugane-radius-sm);
+  border-color: var(--checkbox-border-color);
+  transition: border-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+input[type="checkbox"]:hover {
+  border-color: var(--checkbox-border-color-hover);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--checkbox-color);
+  border-color: var(--checkbox-color);
+}
+
+/* Checkbox animation on check */
+input[type="checkbox"]:checked {
+  animation: tsugane-checkbox-pop var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+@keyframes tsugane-checkbox-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* -------------------------------------------------------------------------
+   6.6 BLOCKQUOTES
+   ----------------------------------------------------------------------- */
+
+blockquote,
+.markdown-rendered blockquote {
+  border-left: var(--blockquote-border-thickness) solid var(--blockquote-border-color);
+  background-color: var(--blockquote-background-color);
+  padding: var(--tsugane-space-md) var(--tsugane-space-lg);
+  margin-left: 0;
+  border-radius: 0 var(--tsugane-radius-md) var(--tsugane-radius-md) 0;
+}
+
+/* -------------------------------------------------------------------------
+   6.7 TABLES
+   ----------------------------------------------------------------------- */
+
+table {
+  border-radius: var(--tsugane-radius-md);
+  overflow: hidden;
+}
+
+th {
+  background-color: var(--table-header-background);
+  font-weight: 600;
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+th:hover {
+  background-color: var(--table-header-background-hover);
+}
+
+/* -------------------------------------------------------------------------
+   6.8 DATAVIEW TABLES
+   ----------------------------------------------------------------------- */
+
+/* Dataview table container */
+.dataview.table-view-table {
+  border-collapse: collapse;
+  border-radius: 0;
+  width: 100%;
+  font-size: var(--font-text-size);
+}
+
+/* Remove default table backgrounds for minimal look */
+.dataview.table-view-table thead {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.dataview.table-view-table th {
+  background-color: transparent;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: var(--tsugane-space-sm) var(--tsugane-space-md);
+  text-align: left;
+  border: none;
+}
+
+.dataview.table-view-table th:hover {
+  background-color: transparent;
+  color: var(--text-normal);
+}
+
+.dataview.table-view-table td {
+  padding: var(--tsugane-space-sm) var(--tsugane-space-md);
+  border: none;
+  border-bottom: 1px solid var(--background-modifier-border);
+  vertical-align: middle;
+}
+
+.dataview.table-view-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Subtle hover on rows */
+.dataview.table-view-table tbody tr {
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.dataview.table-view-table tbody tr:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+/* Links in dataview */
+.dataview.table-view-table a.internal-link {
+  text-decoration: none;
+}
+
+.dataview.table-view-table a.internal-link:hover {
+  text-decoration: underline;
+}
+
+/* Dataview list view */
+.dataview.list-view-ul {
+  padding-left: var(--tsugane-space-lg);
+  margin: 0;
+}
+
+.dataview.list-view-ul li {
+  margin-bottom: var(--tsugane-space-xs);
+}
+
+/* Dataview inline fields */
+.dataview.inline-field-key {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.dataview.inline-field-value {
+  color: var(--text-normal);
+}
+
+/* -------------------------------------------------------------------------
+   6.9 HORIZONTAL RULES
+   ----------------------------------------------------------------------- */
+
+hr,
+.markdown-rendered hr {
+  border: none;
+  border-top: 1px solid var(--divider-color);
+  margin: var(--tsugane-space-xl) 0;
+}
+
+
+/* =============================================================================
+   7. COMPONENTS
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   7.1 BUTTONS
+   ----------------------------------------------------------------------- */
+
+body {
+  --button-radius: var(--tsugane-radius-md);
+}
+
+button,
+.button,
+.mod-cta {
+  border-radius: var(--button-radius);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              box-shadow var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+button:hover,
+.button:hover {
+  transform: translateY(-1px);
+}
+
+button:active,
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Primary button (CTA) */
+.mod-cta {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.mod-cta:hover {
+  background-color: var(--interactive-accent-hover);
+}
+
+/* -------------------------------------------------------------------------
+   7.2 INPUTS & TEXT FIELDS
+   ----------------------------------------------------------------------- */
+
+body {
+  --input-radius: var(--tsugane-radius-md);
+}
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea {
+  border-radius: var(--input-radius);
+  transition: border-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              box-shadow var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 2px rgba(var(--tsugane-accent-rgb), 0.2);
+}
+
+/* -------------------------------------------------------------------------
+   7.3 TOGGLES
+   ----------------------------------------------------------------------- */
+
+body {
+  --toggle-radius: var(--tsugane-radius-xs);
+  --toggle-thumb-radius: var(--tsugane-radius-xs);
+}
+
+.checkbox-container {
+  border-radius: var(--toggle-radius);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.checkbox-container::after {
+  border-radius: var(--toggle-thumb-radius);
+  transition: transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+/* -------------------------------------------------------------------------
+   7.4 MODALS & DIALOGS
+   ----------------------------------------------------------------------- */
+
+body {
+  --modal-radius: var(--tsugane-radius-lg);
+}
+
+.modal-container {
+  border-radius: var(--modal-radius);
+}
+
+.modal-content {
+  border-radius: var(--modal-radius);
+}
+
+/* Modal backdrop animation */
+.modal-bg {
+  transition: opacity var(--tsugane-transition-normal) var(--tsugane-ease-default);
+}
+
+/* -------------------------------------------------------------------------
+   7.5 POPOVERS & TOOLTIPS
+   ----------------------------------------------------------------------- */
+
+body {
+  --popover-radius: var(--tsugane-radius-md);
+}
+
+.popover,
+.suggestion-container,
+.menu {
+  border-radius: var(--popover-radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip {
+  border-radius: var(--tsugane-radius-sm);
+}
+
+.prompt {
+  border-radius: var(--tsugane-radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* -------------------------------------------------------------------------
+   7.6 TABS
+   ------------------------------------------------------------------------- 
+   Floating tab bar with orange active state
+   ----------------------------------------------------------------------- */
+
+body {
+  --tab-radius: var(--tsugane-radius-md);
+  --tab-container-padding: 6px;
+  --tab-container-margin: 0px;
+  --tab-gap: 4px;
+}
+
+/* ---- Workspace Tab Header Container (Floating Style) ---- */
+
+.workspace-tab-header-container {
+  /* Floating appearance */
+  background-color: var(--background-secondary);
+  margin: var(--tab-container-margin);
+  margin-bottom: 0;
+  padding: var(--tab-container-padding);
+  border-radius: var(--tsugane-radius-md);
+  border: 1px solid var(--background-modifier-border);
+  
+  /* Subtle shadow for depth */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  /* Animation */
+  transition: box-shadow var(--tsugane-transition-normal) var(--tsugane-ease-default),
+              background-color var(--tsugane-transition-normal) var(--tsugane-ease-default);
+}
+
+.workspace-tab-header-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab header inner container - add gap between tabs */
+.workspace-tab-header-container-inner {
+  gap: var(--tab-gap);
+  margin: 0;
+  padding: 0;
+}
+
+.mod-root .workspace-tab-header-container-inner {
+  padding: 0;
+  margin: 0;
+}
+
+.workspace-tab-header-new-tab {
+  margin-left: var(--tab-gap);
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--text-on-accent);
+}
+
+.mod-left-split .workspace-tab-header-container .workspace-tab-header.has-active-menu, .mod-right-split .workspace-tab-header-container .workspace-tab-header.has-active-menu, .mod-left-split .workspace-tab-header-container .workspace-tab-header.is-active, .mod-right-split .workspace-tab-header-container .workspace-tab-header.is-active {
+  background-color: var(--tsugane-accent);
+}
+
+.mod-macos.is-hidden-frameless:not(.is-popout-window) .sidebar-toggle-button.mod-right {
+  background-color: var(--background-secondary);
+   border-left: 1px solid var(--background-modifier-border);
+  padding-left: var(--size-4);
+  padding-right: var(--size-4-2);
+}
+
+.sidebar-toggle-button.mod-left {
+  height: 100%;
+}
+
+.mod-left-split .workspace-tab-header-container .workspace-tab-header-container-inner, .mod-right-split .workspace-tab-header-container .workspace-tab-header-container-inner {
+  padding: 0;
+  margin: 0;
+  border-radius: var(--tab-radius);
+}
+
+.mod-left-split .workspace-tab-header-container .workspace-tab-header, .mod-right-split .workspace-tab-header-container .workspace-tab-header {
+  border-radius: var(--tab-radius);
+}
+
+.sidebar-toggle-button {
+  padding: 0;
+}
+
+/* ---- Individual Workspace Tabs ---- */
+
+.workspace-tab-header {
+  border-radius: var(--tab-radius);
+  padding: 0px 0px;
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.workspace-tab-header-container .workspace-tab-header {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tab-radius);
+}
+
+.workspace .mod-root .workspace-tab-header-inner::after {
+  width: 0;
+}
+
+.workspace-tab-header:hover {
+  background-color: #212121;
+  color: #C88418;
+  transform: translateY(-1px);
+}
+
+.workspace-tab-header:hover .workspace-tab-header-inner-title {
+  color: #C88418;
+}
+
+.workspace-tab-header:hover .workspace-tab-header-inner-icon svg {
+  color: #C88418;
+  stroke: #C88418;
+}
+
+/* Close button on hover (inactive tabs) */
+.workspace-tab-header:hover .workspace-tab-header-inner-close-button {
+  color: #C88418;
+}
+
+.workspace-tab-header:hover .workspace-tab-header-inner-close-button svg {
+  color: #C88418;
+  stroke: #C88418;
+}
+
+.workspace-tab-header:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ---- Active Tab (Orange Background) ---- */
+
+.workspace-tab-header.is-active {
+  background-color: #F59E0B;
+  color: #0D0D0D;
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: #0D0D0D;
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-icon svg {
+  color: #0D0D0D;
+  stroke: #0D0D0D;
+}
+
+.workspace-tab-header.is-active:hover {
+  background-color: #212121;
+  color: #C88418;
+}
+
+.workspace-tab-header.is-active:hover .workspace-tab-header-inner-title {
+  color: #C88418;
+}
+
+.workspace-tab-header.is-active:hover .workspace-tab-header-inner-icon svg {
+  color: #C88418;
+  stroke: #C88418;
+}
+
+/* Active tab close button */
+.workspace-tab-header.is-active .workspace-tab-header-inner-close-button {
+  color: #0D0D0D;
+}
+
+.workspace-tab-header.is-active .workspace-tab-header-inner-close-button svg {
+  color: #0D0D0D;
+  stroke: #0D0D0D;
+}
+
+.workspace-tab-header.is-active:hover .workspace-tab-header-inner-close-button {
+  color: #C88418;
+}
+
+.workspace-tab-header.is-active:hover .workspace-tab-header-inner-close-button svg {
+  color: #C88418;
+  stroke: #C88418;
+}
+
+/* ---- Plugin Tabs Container (Tabs plugin, etc.) ---- */
+
+.tabs-container {
+  padding: 0;
+}
+
+.tabs-container:not(.tabs-innertabs).tabs-border-always {
+  border-radius: var(--tsugane-radius-md);
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tab nav items */
+.tabs-container.tabs-nav-top .tabs-nav {
+  gap: var(--tab-gap);
+}
+
+.tabs-container.tabs-nav-top .tabs-nav .tabs-nav-item {
+  border-width: 0;
+  border-radius: var(--tab-radius);
+  padding: 4px 12px;
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.tabs-container.tabs-nav-top .tabs-nav .tabs-nav-item:hover {
+  background-color: var(--background-modifier-hover);
+  transform: translateY(-1px);
+}
+
+.tabs-container.tabs-nav-top .tabs-nav .tabs-nav-item.tabs-nav-item-active {
+  background-color: var(--tsugane-accent);
+  color: var(--mb-bg1);
+  border-radius: var(--tab-radius);
+}
+
+.tabs-container.tabs-nav-top .tabs-nav .tabs-nav-item.tabs-nav-item-active:hover {
+  background-color: var(--tsugane-accent-hover);
+}
+
+/* -------------------------------------------------------------------------
+   7.8 SETTINGS & CARDS
+   ----------------------------------------------------------------------- */
+
+/* Setting groups - sharp corners */
+.setting-item-heading {
+  border-radius: 0;
+}
+
+.vertical-tab-nav-item {
+  border-radius: 0;
+}
+
+/* Base cards - sharp corners */
+.bases-cards-item {
+  border-radius: 0;
+}
+
+.bases-cards-item:hover {
+  border: 1px solid var(--tsugane-accent-hover);
+}
+
+/* Setting group containers */
+.setting-group .setting-items {
+  border-radius: var(--tsugane-radius-md);
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+}
+
+
+/* -------------------------------------------------------------------------
+   7.7 SCROLLBARS
+   ------------------------------------------------------------------------- 
+   Ported from scrollbars.css snippet
+   ----------------------------------------------------------------------- */
+
+body {
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: rgba(var(--mono-rgb-100), 0.1);
+  --scrollbar-active-thumb-bg: rgba(var(--mono-rgb-100), 0.2);
+}
+
+/* Scrollbar dimensions */
+body:not(.restored-scrollbars) ::-webkit-scrollbar,
+body:not(.restored-scrollbars) .kanban-plugin__scroll-container::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+/* Scrollbar thumb */
+body:not(.restored-scrollbars) ::-webkit-scrollbar-thumb,
+body:not(.restored-scrollbars) .kanban-plugin__scroll-container::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  border-radius: var(--tsugane-radius-full);
+  border: 3px solid transparent;
+  min-height: 45px;
+}
+
+/* Hide scrollbar in mobile toolbar */
+body:not(.restored-scrollbars) .mobile-toolbar-options-container::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Scrollbar track */
+body:not(.restored-scrollbars) ::-webkit-scrollbar-track,
+body:not(.restored-scrollbars) ::-webkit-scrollbar-track-piece,
+body:not(.restored-scrollbars):not(.is-mobile) ::-webkit-scrollbar-thumb {
+  background-color: transparent !important;
+}
+
+/* Show scrollbar thumb on hover */
+body:not(.restored-scrollbars):not(.is-mobile) :hover::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-bg) !important;
+}
+
+/* Active/hover state */
+body:not(.restored-scrollbars):not(.is-mobile) ::-webkit-scrollbar-thumb:hover,
+body:not(.restored-scrollbars):not(.is-mobile) ::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-active-thumb-bg) !important;
+}
+
+/* Hide scrollbar in specific views */
+.workspace-leaf-content:is([data-type="surfing-view"], [data-type="graph"], [data-type="localgraph"]) ::-webkit-scrollbar,
+.scrollbar-hide ::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* =============================================================================
+   8. WORKSPACE
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   8.1 RIBBON
+   ----------------------------------------------------------------------- */
+
+.workspace-ribbon {
+  background-color: var(--background-secondary);
+  border-right: 1px solid var(--divider-color);
+}
+
+.side-dock-ribbon-action {
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.side-dock-ribbon-action:hover {
+  color: var(--icon-color-hover);
+  transform: scale(1.1);
+}
+
+/* -------------------------------------------------------------------------
+   8.2 SIDEBAR & FILE EXPLORER
+   ------------------------------------------------------------------------- 
+   Includes file-explorer-wrap.css functionality
+   ----------------------------------------------------------------------- */
+
+/* Allow file names to wrap */
+.nav-file-title,
+.nav-folder-title,
+.nav-file-title-content {
+  white-space: normal;
+}
+
+/* Nav items */
+.nav-file-title,
+.nav-folder-title {
+  border-radius: var(--tsugane-radius-md);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.nav-file-title:hover,
+.nav-folder-title:hover {
+  background-color: var(--nav-item-background-hover);
+  transform: translateX(2px);
+}
+
+.nav-file-title.is-active,
+.nav-folder-title.is-active {
+  background-color: var(--nav-item-background-active);
+  color: var(--nav-item-color-active);
+}
+
+/* Folder collapse icon */
+.nav-folder-collapse-indicator {
+  transition: transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.nav-folder.is-collapsed .nav-folder-collapse-indicator {
+  transform: rotate(-90deg);
+}
+
+/* -------------------------------------------------------------------------
+   8.3 SEARCH (Floating Style)
+   ------------------------------------------------------------------------- 
+   Ported from floating-search-bar.css snippet
+   ----------------------------------------------------------------------- */
+
+.workspace-leaf-content[data-type=search] .nav-header {
+  z-index: var(--layer-popover);
+  padding: 0;
+  background: var(--background-secondary);
+}
+
+.workspace-leaf-content[data-type=search] .nav-header .nav-buttons-container {
+  padding: var(--size-4-2);
+}
+
+.workspace-leaf-content[data-type=search] .nav-header ~ .search-input-container {
+  background: var(--background-secondary);
+  padding: 0;
+  width: calc(100% - var(--size-4-3));
+  margin: 4px auto;
+  box-shadow: 0 3px 4px 0px rgba(0, 0, 0, 0.05);
+  z-index: var(--layer-popover);
+  border-radius: var(--tsugane-radius-md);
+}
+
+.workspace-leaf-content[data-type=search] .search-info-container {
+  box-shadow: 0 3px 4px 0px rgba(0, 0, 0, 0.05);
+  color: var(--text-muted);
+  padding: var(--size-4-1) var(--size-4-4) var(--size-4-1);
+  font-size: var(--font-ui-smaller);
+  border: var(--input-border-width) solid var(--background-modifier-border);
+  width: fit-content;
+  max-width: calc(100% - var(--size-4-3));
+  margin-left: calc(0.5 * var(--size-4-3));
+  margin-right: calc(0.5 * var(--size-4-3));
+  border-radius: var(--tsugane-radius-md);
+  background: var(--background-secondary);
+  z-index: var(--layer-popover);
+  overflow-x: clip;
+}
+
+.workspace-leaf-content[data-type=search] .search-info-container:empty {
+  display: none;
+}
+
+.workspace-leaf-content[data-type=search] .search-result-container.mod-global-search {
+  overflow-y: auto;
+  margin-bottom: calc(-1 * var(--padx));
+  top: calc(-1 * var(--padx));
+  --padx: 50px;
+  padding-top: calc(var(--padx) + 10px);
+}
+
+/* Search result highlighting */
+.search-result-file-match-replace,
+.search-result-file-matched-text {
+  background-color: var(--search-result-background);
+  border-radius: var(--tsugane-radius-sm);
+}
+
+/* -------------------------------------------------------------------------
+   8.4 TAB HEADERS & STACKED TABS
+   ------------------------------------------------------------------------- 
+   Includes hide-stacked-tabs-only-obsidian.css functionality
+   ----------------------------------------------------------------------- */
+
+/* Hide stacked tab headers */
+.workspace-tabs.mod-stacked.mod-top .workspace-tab-header-container {
+  display: none;
+}
+
+/* Tab header container */
+.workspace-tab-header-container {
+  border-bottom: 1px solid var(--divider-color);
+}
+
+/* Tab close button animation */
+.workspace-tab-header-inner-close-button {
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              opacity var(--tsugane-transition-fast) var(--tsugane-ease-default);
+  opacity: 0;
+}
+
+.workspace-tab-header:hover .workspace-tab-header-inner-close-button {
+  opacity: 1;
+}
+
+.workspace-tab-header-inner-close-button:hover {
+  color: var(--text-error);
+}
+
+/* -------------------------------------------------------------------------
+   8.5 STATUS BAR
+   ----------------------------------------------------------------------- */
+
+.status-bar {
+  background-color: var(--background-secondary);
+  border-top: 1px solid var(--divider-color);
+  font-size: var(--font-ui-smaller);
+}
+
+.status-bar-item {
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.status-bar-item:hover {
+  color: var(--text-normal);
+}
+
+
+/* =============================================================================
+   9. CALLOUTS
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   9.1 BASE CALLOUT STYLING
+   ----------------------------------------------------------------------- */
+
+.callout {
+  border-radius: var(--tsugane-radius-md);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              border-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.callout-title {
+  font-weight: 600;
+}
+
+.callout-icon {
+  transition: transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.callout:hover .callout-icon {
+  transform: scale(1.1);
+}
+
+/* Callout fold animation */
+.callout.is-collapsed .callout-fold {
+  transform: rotate(-90deg);
+}
+
+.callout-fold {
+  transition: transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+/* -------------------------------------------------------------------------
+   9.2 CALLOUT TYPE COLORS
+   ----------------------------------------------------------------------- */
+
+/* Callout colors are defined in the theme sections above using:
+   --callout-note, --callout-info, --callout-tip, etc. */
+
+
+/* =============================================================================
+   10. ANIMATIONS
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   10.1 BASE TRANSITIONS
+   ----------------------------------------------------------------------- */
+
+/* Clickable icons */
+.clickable-icon {
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.clickable-icon:hover {
+  color: var(--icon-color-hover);
+  transform: scale(1.1);
+}
+
+.clickable-icon:active {
+  transform: scale(0.95);
+}
+
+/* -------------------------------------------------------------------------
+   10.2 HOVER EFFECTS
+   ----------------------------------------------------------------------- */
+
+/* Tree item hover */
+.tree-item-self {
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+/* Setting item hover */
+.setting-item {
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+/* Suggestion item */
+.suggestion-item {
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+/* Menu item */
+.menu-item {
+  border-radius: var(--tsugane-radius-sm);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+/* -------------------------------------------------------------------------
+   10.3 FOCUS STATES
+   ----------------------------------------------------------------------- */
+
+/* Focus visible outline */
+*:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+  transition: outline-color var(--tsugane-transition-fast) var(--tsugane-ease-snappy);
+}
+
+/* Remove focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* -------------------------------------------------------------------------
+   10.4 KEYFRAME ANIMATIONS
+   ----------------------------------------------------------------------- */
+
+/* Fade in animation */
+@keyframes tsugane-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pop animation for interactive elements */
+@keyframes tsugane-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Slide in from left */
+@keyframes tsugane-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pulse animation */
+@keyframes tsugane-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Apply fade in to modals */
+.modal-container {
+  animation: tsugane-fade-in var(--tsugane-transition-normal) var(--tsugane-ease-default);
+}
+
+/* Apply slide in to suggestions */
+.suggestion-container {
+  animation: tsugane-fade-in var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+
+/* =============================================================================
+   11. UTILITY CLASSES
+   ============================================================================= */
+
+/* -------------------------------------------------------------------------
+   11.1 HIDE PROPERTIES (cssclass)
+   ------------------------------------------------------------------------- 
+   Ported from base.css snippet
+   ----------------------------------------------------------------------- */
+
+/* Hide properties in reading mode */
+.hide-properties_reading {
+  --metadata-display-reading: none;
+}
+
+/* Hide properties in editing mode */
+.hide-properties_editing {
+  --metadata-display-editing: none;
+}
+
+/* -------------------------------------------------------------------------
+   11.2 NO INLINE TITLE (cssclass)
+   ------------------------------------------------------------------------- 
+   Ported from base.css snippet
+   ----------------------------------------------------------------------- */
+
+.no-inline .inline-title {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------
+   11.3 ICON ADJUSTMENTS (Datacore)
+   ------------------------------------------------------------------------- 
+   Ported from datacore-classes.css snippet
+   ----------------------------------------------------------------------- */
+
+.icon {
+  transform: translateY(13%);
+}
+
+.icon svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-in-link {
+  transform: translateY(20%);
+  margin-right: var(--size-2-2);
+  display: inline-flex;
+}
+
+.icon-in-link svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* -------------------------------------------------------------------------
+   11.4 HOVER POPOVER TITLE
+   ------------------------------------------------------------------------- 
+   Ported from show-hover-title.css snippet
+   ----------------------------------------------------------------------- */
+
+.hover-popover .inline-title,
+.inline-embed .inline-title {
+  display: inline;
+}
+
+/* -------------------------------------------------------------------------
+   11.5 NOTE TOOLBAR FAB
+   ------------------------------------------------------------------------- 
+   Minimal flat style for Note Toolbar plugin
+   ----------------------------------------------------------------------- */
+
+/* FAB container */
+.cg-note-toolbar-fab-container {
+  border-radius: 0;
+}
+
+/* FAB button */
+.cg-note-toolbar-fab-container .cg-note-toolbar-fab {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 0;
+  box-shadow: none;
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              border-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.cg-note-toolbar-fab-container .cg-note-toolbar-fab:hover {
+  background-color: var(--background-modifier-hover);
+  border-color: var(--text-muted);
+  box-shadow: none;
+}
+
+/* FAB icon */
+.cg-note-toolbar-fab-container .cg-note-toolbar-fab svg {
+  color: var(--text-muted);
+  stroke: var(--text-muted);
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              stroke var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.cg-note-toolbar-fab-container .cg-note-toolbar-fab:hover svg {
+  color: var(--text-normal);
+  stroke: var(--text-normal);
+}
+
+/* Toolbar dropdown/menu */
+.cg-note-toolbar-fab-container .cg-note-toolbar-menu {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.cg-note-toolbar-fab-container .cg-note-toolbar-menu-item {
+  border-radius: 0;
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.cg-note-toolbar-fab-container .cg-note-toolbar-menu-item:hover {
+  background-color: var(--background-modifier-hover);
+}
+
+.cg-note-toolbar-fab-container .cg-note-toolbar-fab svg {
+  color: var(--tsugane-accent);
+stroke: var(--tsugane-accent);
+
+}
+
+
+/* =============================================================================
+   END OF TSUGANE THEME
+   ============================================================================= 
+   
+   Thank you for using Tsugane!
+   
+   For customization:
+   - Border radius: Modify --tsugane-radius-base (Section 1.1)
+   - Animation speed: Modify --tsugane-transition-* (Section 1.2)
+   - Colors: Modify variables in Section 2 or the theme sections (3/4)
+   
+   ============================================================================= */
