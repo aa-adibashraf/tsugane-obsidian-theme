@@ -2,10 +2,10 @@
 
 A minimal, sharp-edged Obsidian theme with a dark mode based on the [Matteblack Neovim](https://github.com/matteblack/neovim) colorscheme and a warm cream light mode.
 
-![Tsugane Dark Mode](screenshots/tsugane-dark-1.png)
-![Tsugane Dark Mode](screenshots/tsugane-dark-2.png)
-![Tsugane Light Mode](screenshots/tsugane-light-1.png)
-![Tsugane Light Mode](screenshots/tsugane-light-2.png)
+![Tsugane Dark Mode 1](screenshots/tsugane-dark-1.jpeg)
+![Tsugane Dark Mode 2](screenshots/tsugane-dark-2.png)
+![Tsugane Light Mode 1](screenshots/tsugane-light-1.png)
+![Tsugane Light Mode 2](screenshots/tsugane-light-2.png)
 
 ## Features
 
