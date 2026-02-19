@@ -2151,6 +2151,7 @@ stroke: var(--tsugane-accent);
 
 .is-mobile.is-floating-nav .mod-raised {
   border: solid 1px var(--cg-nt-fab-border-color);
+  backdrop-filter: var(--blur-m);
 }
 
 .mobile-toolbar-options-list-container {
@@ -2170,10 +2171,6 @@ stroke: var(--tsugane-accent);
 .is-floating-nav .mobile-toolbar-options-container {
     margin: 0 auto;
     width: calc(100% - var(--size-4-4));
-}
-
-.is-mobile.is-floating-nav .mod-raised {
-  border: none;
 }
 
 
