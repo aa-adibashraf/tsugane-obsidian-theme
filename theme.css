@@ -2014,7 +2014,7 @@ body:not(.restored-scrollbars):not(.is-mobile) ::-webkit-scrollbar-thumb:active 
 /* FAB button */
 .cg-note-toolbar-fab-container .cg-note-toolbar-fab {
   background-color: var(--background-primary);
-  border: 1px solid var(--background-modifier-border);
+  border: solid 1px var(--cg-nt-fab-border-color);
   border-radius: 0;
   box-shadow: none;
   transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
@@ -2043,8 +2043,8 @@ body:not(.restored-scrollbars):not(.is-mobile) ::-webkit-scrollbar-thumb:active 
 /* Toolbar dropdown/menu */
 .cg-note-toolbar-fab-container .cg-note-toolbar-menu {
   background-color: var(--background-primary);
-  border: 1px solid var(--background-modifier-border);
-  border-radius: 0;
+    border: solid 1px var(--cg-nt-fab-border-color);
+border-radius: 0;
   box-shadow: none;
 }
 
