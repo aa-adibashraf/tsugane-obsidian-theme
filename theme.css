@@ -84,13 +84,28 @@
        10.3 Focus States
        10.4 Keyframe Animations
    
-   11. UTILITY CLASSES ....................... Line ~1200
-       11.1 Hide Properties (cssclass)
-       11.2 No Inline Title (cssclass)
-       11.3 Icon Adjustments (Datacore)
-       11.4 Hover Popover Title
-   
-   ============================================================================= */
+    11. UTILITY CLASSES ....................... Line ~1200
+        11.1 Hide Properties (cssclass)
+        11.2 No Inline Title (cssclass)
+        11.3 Icon Adjustments (Datacore)
+        11.4 Hover Popover Title
+    
+    12. MOBILE ................................ Line ~2050
+        12.1 Mobile Variables Override
+        12.2 Mobile Navbar
+        12.3 Mobile Toolbar
+        12.4 Mobile Toolbar Buttons
+        12.5 Mobile Inputs
+        12.6 Metadata / Properties
+        12.7 Navigation Drawer
+        12.8 Platform-Specific (iOS/Android)
+        12.9 Mobile Modals & Menus
+        12.10 Mobile Tabs
+        12.11 Mobile Editor
+        12.12 Mobile Buttons
+        12.13 Mobile Settings
+    
+    ============================================================================= */
 
 
 /* =============================================================================
@@ -2046,6 +2061,665 @@ body:not(.restored-scrollbars):not(.is-mobile) ::-webkit-scrollbar-thumb:active 
   color: var(--tsugane-accent);
 stroke: var(--tsugane-accent);
 
+}
+
+
+/* =============================================================================
+   12. MOBILE
+   ============================================================================= 
+   
+   Mobile-specific styling to ensure the theme looks and works consistently
+   across iOS and Android devices.
+   
+   =========================================================================== */
+
+/* -------------------------------------------------------------------------
+   12.1 MOBILE VARIABLES OVERRIDE
+   -------------------------------------------------------------------------
+   Override Obsidian's mobile-specific variables to maintain the sharp,
+   editorial aesthetic on touch devices.
+   ----------------------------------------------------------------------- */
+
+.is-mobile {
+  /* Touch radius - set all to 0px for sharp corners */
+  --touch-radius-xxs: 0px;
+  --touch-radius-xs: 0px;
+  --touch-radius-sm: 0px;
+  --touch-radius-md: 0px;
+  --touch-radius-lg: 0px;
+  --touch-radius-xl: 0px;
+  
+  /* Apply our radius system to mobile */
+  --radius-s: var(--tsugane-radius-sm);
+  --radius-m: var(--tsugane-radius-md);
+  --radius-l: var(--tsugane-radius-lg);
+  --radius-xl: var(--tsugane-radius-xl);
+  
+  /* Input radius */
+  --input-radius: var(--tsugane-radius-md);
+  
+  /* Button radius */
+  --button-radius: var(--tsugane-radius-md);
+  
+  /* Modal radius */
+  --modal-radius: var(--tsugane-radius-lg);
+  
+  /* Prompt/dialog radius */
+  --prompt-border-radius: var(--tsugane-radius-md);
+  
+  /* Tag radius */
+  --tag-radius: var(--tsugane-radius-md);
+  
+  /* Toggle radius - keep consistent with desktop */
+  --toggle-radius: var(--tsugane-radius-xs);
+  --toggle-thumb-radius: var(--tsugane-radius-xs);
+  
+  /* Checkbox radius */
+  --checkbox-radius: var(--tsugane-radius-sm);
+  
+  /* Slightly larger base font for mobile readability */
+  --font-text-size: 16px;
+  --font-ui-small: 13px;
+  --font-ui-smaller: 11px;
+}
+
+/* Phone-specific adjustments */
+.is-phone {
+  --font-text-size: 16px;
+}
+
+/* Tablet can use slightly smaller text */
+.is-tablet {
+  --font-text-size: 15px;
+}
+
+/* -------------------------------------------------------------------------
+   12.2 MOBILE NAVBAR
+   -------------------------------------------------------------------------
+   Top navigation bar with back button, title, and actions.
+   Styled to match the floating tab bar aesthetic from desktop.
+   ----------------------------------------------------------------------- */
+
+.mobile-navbar {
+  background-color: var(--background-secondary);
+  transition: background-color var(--tsugane-transition-normal) var(--tsugane-ease-default),
+              box-shadow var(--tsugane-transition-normal) var(--tsugane-ease-default);
+
+  border-radius: var(--tsugane-radius-sm);
+  border: solid 1px var(--cg-nt-fab-border-color);
+}
+
+.is-mobile.is-floating-nav .mod-raised {
+  border: solid 1px var(--cg-nt-fab-border-color);
+}
+
+.mobile-toolbar-options-list-container {
+  border-radius: var(--tsugane-radius-sm);
+  border: transparent;
+}
+
+.mobile-toolbar-option-list-container mod-raised {
+  border: none;
+  background-color: var(--background-primary);
+}
+
+.is-phone .mod-raised {
+  background: transparent;
+}
+
+.is-floating-nav .mobile-toolbar-options-container {
+    margin: 0 auto;
+    width: calc(100% - var(--size-4-4));
+}
+
+.is-mobile.is-floating-nav .mod-raised {
+  border: none;
+}
+
+
+/* Navbar title */
+.mobile-navbar .view-header-title {
+  font-family: var(--font-interface);
+  font-weight: 500;
+  color: var(--text-normal);
+}
+
+/* Navbar action buttons */
+.mobile-navbar .view-action {
+  color: var(--icon-color);
+  border-radius: var(--tsugane-radius-md);
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              background-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.mobile-navbar .view-action:active {
+  color: var(--tsugane-accent);
+  background-color: var(--background-modifier-hover);
+}
+
+.mobile-navbar .view-action.is-active {
+  color: var(--tsugane-accent);
+}
+
+/* Back button */
+.mobile-navbar .clickable-icon {
+  color: var(--icon-color);
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.mobile-navbar .clickable-icon:active {
+  color: var(--tsugane-accent);
+}
+
+/* -------------------------------------------------------------------------
+   12.3 MOBILE TOOLBAR
+   -------------------------------------------------------------------------
+   Bottom editing toolbar with formatting options.
+   Floating container style matching desktop aesthetics.
+   ----------------------------------------------------------------------- */
+
+.mobile-toolbar {
+  border-top: 1px solid var(--background-modifier-border);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--tsugane-transition-normal) var(--tsugane-ease-default),
+              box-shadow var(--tsugane-transition-normal) var(--tsugane-ease-default);
+}
+
+/* Toolbar options container - horizontal scrolling area */
+.mobile-toolbar-options-container {
+  background-color: transparent;
+  gap: 2px;
+  padding: 4px 8px;
+}
+
+/* Hide scrollbar in toolbar (already in scrollbar section but reinforcing) */
+.mobile-toolbar-options-container::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* -------------------------------------------------------------------------
+   12.4 MOBILE TOOLBAR BUTTONS
+   -------------------------------------------------------------------------
+   Individual toolbar buttons with orange active state.
+   ----------------------------------------------------------------------- */
+
+.mobile-toolbar-option {
+  background-color: transparent;
+  color: var(--icon-color);
+  border-radius: var(--tsugane-radius-md);
+  padding: 8px 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              transform var(--tsugane-transition-fast) var(--tsugane-ease-bounce);
+}
+
+.mobile-toolbar-option:active {
+  transform: scale(0.95);
+}
+
+/* Active/selected state - orange background like desktop tabs */
+.mobile-toolbar-option.is-active {
+  background-color: var(--tsugane-accent);
+  color: var(--text-on-accent);
+}
+
+.mobile-toolbar-option.is-active svg {
+  color: var(--text-on-accent);
+  stroke: var(--text-on-accent);
+}
+
+/* Hover-like state for touch (using :active) */
+.mobile-toolbar-option:not(.is-active):active {
+  color: var(--tsugane-accent);
+}
+
+.mobile-toolbar-option:not(.is-active):active svg {
+  stroke: var(--tsugane-accent);
+}
+
+/* Toolbar icons */
+.mobile-toolbar-option svg {
+  color: var(--icon-color);
+  stroke: var(--icon-color);
+  transition: color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              stroke var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+/* -------------------------------------------------------------------------
+   12.5 MOBILE INPUTS
+   -------------------------------------------------------------------------
+   Mobile-specific input fields (.mb-input) and search inputs.
+   ----------------------------------------------------------------------- */
+
+/* Mobile input base styling */
+.mb-input,
+.is-mobile input[type="text"],
+.is-mobile input[type="search"],
+.is-mobile .prompt-input {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tsugane-radius-md);
+  color: var(--text-normal);
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-small);
+  padding: 10px 12px;
+  min-height: 44px;
+  transition: border-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              box-shadow var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.mb-input:focus,
+.is-mobile input[type="text"]:focus,
+.is-mobile input[type="search"]:focus,
+.is-mobile .prompt-input:focus {
+  border-color: var(--tsugane-accent);
+  box-shadow: 0 0 0 2px rgba(var(--tsugane-accent-rgb), 0.2);
+  outline: none;
+}
+
+/* Mobile search input in navbar */
+.is-mobile .search-input-container {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tsugane-radius-md);
+}
+
+.is-mobile .search-input-container:focus-within {
+  border-color: var(--tsugane-accent);
+  box-shadow: 0 0 0 2px rgba(var(--tsugane-accent-rgb), 0.2);
+}
+
+/* Quick switcher / command palette on mobile */
+.is-mobile .prompt {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tsugane-radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.is-mobile .suggestion-container {
+  border-radius: var(--tsugane-radius-md);
+}
+
+.is-mobile .suggestion-item {
+  border-radius: var(--tsugane-radius-sm);
+  padding: 10px 12px;
+  min-height: 44px;
+}
+
+.is-mobile .suggestion-item.is-selected {
+  background-color: var(--background-modifier-hover);
+}
+
+/* -------------------------------------------------------------------------
+   12.6 METADATA / PROPERTIES
+   -------------------------------------------------------------------------
+   Properties panel styling for mobile.
+   ----------------------------------------------------------------------- */
+
+.is-mobile .metadata-container {
+  border-radius: var(--tsugane-radius-md);
+  border: 1px solid var(--background-modifier-border);
+  background-color: var(--background-secondary);
+}
+
+
+/* Property labels */
+.is-mobile .metadata-property-key {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+/* Property values */
+.is-mobile .metadata-property-value {
+  color: var(--text-normal);
+}
+
+/* Property input fields */
+.is-mobile .metadata-input-wrapper input,
+.is-mobile .metadata-input-wrapper textarea {
+  /* background-color: var(--background-primary); */
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tsugane-radius-sm);
+  /* padding: 6px 10px; */
+  min-height: 36px;
+  transition: border-color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.is-mobile .metadata-input-wrapper input:focus,
+.is-mobile .metadata-input-wrapper textarea:focus {
+  border-color: var(--tsugane-accent);
+}
+
+/* Add property button */
+.is-mobile .metadata-add-button {
+  color: var(--text-muted);
+  border-radius: var(--tsugane-radius-md);
+  min-height: 44px;
+}
+
+.is-mobile .metadata-add-button:active {
+  color: var(--tsugane-accent);
+  background-color: var(--background-modifier-hover);
+}
+
+.is-mobile .metadata-content {
+  transform: translateX(0px);
+  background-color: transparent;
+}
+
+.is-mobile .metadata-property-key-input {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.mb-input, .is-mobile input[type="text"], .is-mobile input[type="search"], .is-mobile .prompt-input {
+    background-color: transparent;
+  border: none;
+  padding: 0px 4px;
+
+}
+
+.metadata-properties-title {
+  padding: 8px 16px;
+} 
+
+/* -------------------------------------------------------------------------
+   12.7 NAVIGATION DRAWER
+   -------------------------------------------------------------------------
+   File browser and sidebar navigation for mobile.
+   ----------------------------------------------------------------------- */
+
+/* Drawer/sidebar container */
+.is-mobile .workspace-drawer {
+  background-color: var(--background-secondary);
+  border-right: 1px solid var(--background-modifier-border);
+}
+
+.is-mobile .workspace-drawer.mod-right {
+  border-right: none;
+  border-left: 1px solid var(--background-modifier-border);
+}
+
+/* Drawer backdrop */
+.is-mobile .workspace-drawer-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity var(--tsugane-transition-normal) var(--tsugane-ease-default);
+}
+
+/* Nav items - larger touch targets */
+.is-mobile .nav-file-title,
+.is-mobile .nav-folder-title {
+  padding: 10px 12px;
+  min-height: 44px;
+  border-radius: var(--tsugane-radius-md);
+  transition: background-color var(--tsugane-transition-fast) var(--tsugane-ease-default),
+              color var(--tsugane-transition-fast) var(--tsugane-ease-default);
+}
+
+.is-mobile .nav-file-title:active,
+.is-mobile .nav-folder-title:active {
+  background-color: var(--nav-item-background-hover);
+}
+
+.is-mobile .nav-file-title.is-active,
+.is-mobile .nav-folder-title.is-active {
+  background-color: var(--nav-item-background-active);
+  color: var(--nav-item-color-active);
+}
+
+/* Folder collapse indicator */
+.is-mobile .nav-folder-collapse-indicator {
+  padding: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tree items */
+.is-mobile .tree-item-self {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: var(--tsugane-radius-md);
+}
+
+/* Vault switcher */
+.is-mobile .workspace-drawer-vault-switcher {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tsugane-radius-md);
+  margin: 8px;
+  padding: 10px 12px;
+  min-height: 44px;
+}
+
+/* -------------------------------------------------------------------------
+   12.8 PLATFORM-SPECIFIC
+   -------------------------------------------------------------------------
+   iOS and Android specific adjustments.
+   ----------------------------------------------------------------------- */
+
+/* iOS safe areas for notch and home indicator */
+.mod-ios .mobile-navbar {
+  padding-top: env(safe-area-inset-top);
+}
+
+.mod-ios .mobile-toolbar {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mod-ios .workspace-drawer {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* iOS-specific adjustments */
+.mod-ios .mobile-navbar {
+  /* Ensure proper spacing for iOS status bar */
+  min-height: calc(44px + env(safe-area-inset-top));
+}
+
+/* Android-specific adjustments */
+.mod-android .mobile-navbar {
+  /* Android typically has system status bar handled differently */
+  min-height: 56px;
+}
+
+/* -------------------------------------------------------------------------
+   12.9 MOBILE MODALS & MENUS
+   -------------------------------------------------------------------------
+   Modals, context menus, and popovers on mobile.
+   ----------------------------------------------------------------------- */
+
+.is-mobile .modal-container {
+  border-radius: var(--tsugane-radius-lg);
+}
+
+.is-mobile .modal-content {
+  border-radius: var(--tsugane-radius-lg);
+}
+
+/* Context menu / long-press menu */
+.is-mobile .menu {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--tsugane-radius-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.is-mobile .menu-item {
+  padding: 12px 16px;
+  min-height: 44px;
+  border-radius: var(--tsugane-radius-sm);
+}
+
+.is-mobile .menu-item:active {
+  background-color: var(--background-modifier-hover);
+}
+
+.is-mobile .menu-separator {
+  margin: 4px 0;
+}
+
+/* -------------------------------------------------------------------------
+   12.10 MOBILE TABS
+   -------------------------------------------------------------------------
+   Tab styling for mobile (when tabs are visible).
+   ----------------------------------------------------------------------- */
+
+.is-mobile .workspace-tab-header-container {
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 4px;
+}
+
+.is-mobile .workspace-tab-header {
+  border-radius: var(--tsugane-radius-md);
+  min-height: 36px;
+  padding: 6px 12px;
+}
+
+.is-mobile .workspace-tab-header.is-active {
+  background-color: var(--tsugane-accent);
+  color: var(--text-on-accent);
+}
+
+.is-mobile .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--text-on-accent);
+}
+
+/* -------------------------------------------------------------------------
+   12.11 MOBILE EDITOR
+   -------------------------------------------------------------------------
+   Editor-specific mobile adjustments.
+   ----------------------------------------------------------------------- */
+
+/* Larger line height for mobile readability */
+.is-mobile .markdown-source-view,
+.is-mobile .markdown-preview-view {
+  line-height: 1.7;
+}
+
+/* Inline title on mobile */
+.is-mobile .inline-title {
+  font-family: var(--inline-title-font);
+  font-weight: var(--inline-title-weight);
+  font-size: clamp(1.5rem, 6vw, 2rem);
+}
+
+/* Links - larger touch targets */
+.is-mobile a.internal-link,
+.is-mobile a.external-link {
+  padding: 2px 0;
+}
+
+/* Checkboxes - larger on mobile */
+.is-mobile input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+/* Callouts on mobile */
+.is-mobile .callout {
+  border-radius: var(--tsugane-radius-md);
+}
+
+/* Code blocks on mobile */
+.is-mobile pre,
+.is-mobile .markdown-rendered pre {
+  border-radius: var(--tsugane-radius-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* -------------------------------------------------------------------------
+   12.12 MOBILE BUTTONS
+   -------------------------------------------------------------------------
+   Touch-optimized button styling.
+   ----------------------------------------------------------------------- */
+
+.is-mobile button,
+.is-mobile .button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 16px;
+  border-radius: var(--tsugane-radius-md);
+}
+
+.is-mobile .mod-cta {
+  background-color: var(--tsugane-accent);
+  color: var(--text-on-accent);
+}
+
+.is-mobile .mod-cta:active {
+  background-color: var(--tsugane-accent-hover);
+}
+
+/* Clickable icons - larger touch targets */
+.is-mobile .clickable-icon {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------------------------------------------------------------------------
+   12.13 MOBILE SETTINGS
+   -------------------------------------------------------------------------
+   Settings page styling on mobile.
+   ----------------------------------------------------------------------- */
+
+.is-mobile .vertical-tab-nav-item {
+  min-height: 44px;
+  padding: 12px 16px;
+  border-radius: 0;
+}
+
+.is-mobile .setting-item {
+  padding: 12px 0;
+  min-height: 44px;
+}
+
+.is-mobile .setting-item-control {
+  gap: 8px;
+}
+
+/* Toggles on mobile */
+.is-mobile .checkbox-container {
+  min-width: 44px;
+  min-height: 28px;
+}
+
+.clickable-icon {
+  border-radius: var(--tsugane-radius-sm);
+}
+
+.is-phone .view-header .view-action {
+  border-radius: var(--tsugane-radius-sm);
+  border: solid 1px var(--cg-nt-fab-border-color);
+}
+
+.is-mobile button, .is-mobile .button {
+  padding: 2px;
+  border-radius: var(--tsugane-radius-sm);
+}
+
+.is-phone .view-header .view-actions {
+
+  border-radius: var(--tsugane-radius-sm);
 }
 
 
